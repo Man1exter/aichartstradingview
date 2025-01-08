@@ -1,6 +1,6 @@
 import sys
 import subprocess
-from PySide6.QtWidgets import QApplication, QMainWindow, QHBoxLayout, QVBoxLayout, QWidget, QPushButton, QSpacerItem, QSizePolicy
+from PySide6.QtWidgets import QApplication, QMainWindow, QHBoxLayout, QVBoxLayout, QWidget, QPushButton, QSpacerItem, QSizePolicy, QLineEdit
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtCore import Qt
 
@@ -17,7 +17,7 @@ class CryptoChart(QMainWindow):
         self.web_view = QWebEngineView()
 
         # HTML osadzonego widgetu TradingView
-        tradingview_html = '''
+        self.tradingview_html = '''
         <!DOCTYPE html>
         <html>
         <head>
@@ -25,6 +25,7 @@ class CryptoChart(QMainWindow):
             <style>
                 body {
                     margin: 0;
+                    padding: 0;
                     background-color: black;
                     height: 100%;
                     overflow: hidden;
@@ -52,35 +53,15 @@ class CryptoChart(QMainWindow):
         </body>
         </html>
         '''
+        self.web_view.setHtml(self.tradingview_html)
 
-        # Załaduj HTML do WebEngineView
-        self.web_view.setHtml(tradingview_html)
+        # Create buttons for AI analysis, refreshing the chart, and changing the chart symbol
+        self.analysis_button = QPushButton("Analyze Chart")
+        self.refresh_button = QPushButton("Refresh Chart")
+        self.change_symbol_button = QPushButton("Change Symbol")
 
-        # Create a button for AI analysis
-        self.analysis_button = QPushButton("Analiza AI")
-        self.analysis_button.setStyleSheet("""
-            background-color: #28a745;
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-            padding: 10px;
-            border-radius: 5px;
-            height: 40px;
-            width: 150px;
-        """)
-
-        # Efekt najechania na przycisk
-        self.analysis_button.setStyleSheet("""
-            background-color: #28a745;
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-            padding: 10px;
-            border-radius: 5px;
-            height: 40px;
-            width: 150px;
-        """)
-        self.analysis_button.setStyleSheet("""
+        # Set styles for the buttons
+        button_style = """
             QPushButton {
                 background-color: #28a745;
                 color: white;
@@ -97,21 +78,44 @@ class CryptoChart(QMainWindow):
             QPushButton:pressed {
                 background-color: #1e7e34;  # Even darker green on press
             }
+        """
+        self.analysis_button.setStyleSheet(button_style)
+        self.refresh_button.setStyleSheet(button_style)
+        self.change_symbol_button.setStyleSheet(button_style)
+
+        # Connect the buttons to their respective functions
+        self.analysis_button.clicked.connect(self.run_analysis_ai)
+        self.refresh_button.clicked.connect(self.refresh_chart)
+        self.change_symbol_button.clicked.connect(self.change_symbol)
+
+        # Create an input field for changing the chart symbol
+        self.symbol_input = QLineEdit()
+        self.symbol_input.setPlaceholderText("Enter symbol (e.g., BINANCE:BTCUSDT)")
+        self.symbol_input.setStyleSheet("""
+            QLineEdit {
+                background-color: white;
+                color: black;
+                font-size: 18px;
+                padding: 10px;
+                border-radius: 5px;
+                height: 40px;
+                width: 250px;
+            }
         """)
 
-        # Connect the button to a function
-        self.analysis_button.clicked.connect(self.run_analysis_ai)
-
-        # Set up the layout for both the chart and the button
-        main_layout = QVBoxLayout()  # Zmieniono z QHBoxLayout na QVBoxLayout
+        # Set up the layout for the chart and the buttons
+        main_layout = QVBoxLayout()
         chart_layout = QHBoxLayout()
         chart_layout.addWidget(self.web_view)
         main_layout.addLayout(chart_layout)
 
-        # Add the analysis button below the chart
+        # Add the buttons and input field below the chart
         button_layout = QHBoxLayout()
-        button_layout.addItem(QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))  # Spacer, aby przycisk był z prawej
+        button_layout.addItem(QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
         button_layout.addWidget(self.analysis_button)
+        button_layout.addWidget(self.refresh_button)
+        button_layout.addWidget(self.symbol_input)
+        button_layout.addWidget(self.change_symbol_button)
         main_layout.addLayout(button_layout)
 
         container = QWidget()
@@ -123,8 +127,25 @@ class CryptoChart(QMainWindow):
         self.setWindowFlags(Qt.Window | Qt.WindowTitleHint | Qt.WindowCloseButtonHint)
         self.center_window()
 
-        # Uruchomienie analysis_button.py automatycznie
-        subprocess.run([sys.executable, 'analysis_button.py'])
+    def run_analysis_ai(self):
+        # Placeholder function for AI analysis
+        print("Running AI analysis...")
+
+    def refresh_chart(self):
+        # Refresh the TradingView widget
+        self.web_view.setHtml(self.tradingview_html)
+        print("Chart refreshed.")
+
+    def change_symbol(self):
+        # Change the symbol in the TradingView widget
+        new_symbol = self.symbol_input.text()
+        if new_symbol:
+            self.tradingview_html = self.tradingview_html.replace(
+                '"symbol": "BINANCE:BTCUSDT"',
+                f'"symbol": "{new_symbol}"'
+            )
+            self.web_view.setHtml(self.tradingview_html)
+            print(f"Symbol changed to {new_symbol}.")
 
     def center_window(self):
         screen_geometry = QApplication.primaryScreen().geometry()
@@ -132,16 +153,8 @@ class CryptoChart(QMainWindow):
         window_geometry.moveCenter(screen_geometry.center())
         self.move(window_geometry.topLeft())
 
-    def run_analysis_ai(self):
-        """Funkcja uruchamiająca analizę AI (można dostosować w zależności od wymagań)."""
-        print("Uruchamianie analizy AI...")
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    main_window = CryptoChart()
-    main_window.show()
+    window = CryptoChart()
+    window.show()
     sys.exit(app.exec())
-
-
-
-
