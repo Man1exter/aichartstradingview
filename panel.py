@@ -1,67 +1,59 @@
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout, QWidget
-from PySide6.QtGui import QPixmap
-from PySide6.QtCore import Qt
-import requests
-from io import BytesIO
-from PIL import Image
+from PySide6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget
+from PySide6.QtWebEngineWidgets import QWebEngineView
 
-# Funkcja do pobierania danych z TradingView
-# TradingView nie udostępnia oficjalnego API dla publicznego użytku, więc korzystamy z alternatywnych źródeł danych
-# (np. Binance lub CoinGecko do pobierania wykresu lub danych)
-def fetch_chart(pair="BTCUSDT"):
-    # Przykladowy link do wykresu TradingView (można zastąpić własnym źródłem danych)
-    chart_url = f"https://s3.tradingview.com/snapshots/o/O{pair}.png"  # Przykład (dla ilustracji)
+class CryptoChart(QMainWindow):
+    def __init__(self):
+        super().__init__()
 
-    try:
-        response = requests.get(chart_url)
-        if response.status_code == 200:
-            return Image.open(BytesIO(response.content))
-        else:
-            raise Exception("Nie udało się pobrać wykresu. Kod błędu: " + str(response.status_code))
-    except Exception as e:
-        print(f"Błąd: {e}")
-        return None
+        self.setWindowTitle("Crypto Chart Viewer - TradingView")
+        self.setGeometry(100, 100, 1200, 800)
 
-# Główna klasa aplikacji
-def create_main_window():
-    class MainWindow(QMainWindow):
-        def __init__(self):
-            super().__init__()
+        # Widget WebEngineView do wyświetlenia widgetu TradingView
+        self.web_view = QWebEngineView()
 
-            self.setWindowTitle("Crypto Chart Viewer")
-            self.setGeometry(100, 100, 800, 600)
+        # HTML osadzonego widgetu TradingView
+        tradingview_html = '''
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+        </head>
+        <body>
+            <div id="tradingview_widget"></div>
+            <script type="text/javascript">
+                new TradingView.widget({
+                    "width": 1100,
+                    "height": 700,
+                    "symbol": "BINANCE:BTCUSDT",
+                    "interval": "1",
+                    "timezone": "Etc/UTC",
+                    "theme": "dark",
+                    "style": "1",
+                    "locale": "en",
+                    "toolbar_bg": "#f1f3f6",
+                    "enable_publishing": false,
+                    "hide_top_toolbar": true,
+                    "save_image": false,
+                    "container_id": "tradingview_widget"
+                });
+            </script>
+        </body>
+        </html>
+        '''
 
-            # Layout
-            layout = QVBoxLayout()
+        # Załaduj HTML do WebEngineView
+        self.web_view.setHtml(tradingview_html)
 
-            # Label na wykres
-            self.chart_label = QLabel("Pobieranie wykresu...")
-            self.chart_label.setAlignment(Qt.AlignCenter)
-            layout.addWidget(self.chart_label)
-
-            # Główne okno
-            container = QWidget()
-            container.setLayout(layout)
-            self.setCentralWidget(container)
-
-            # Załaduj wykres
-            self.load_chart("BTCUSDT")
-
-        def load_chart(self, pair):
-            image = fetch_chart(pair)
-            if image:
-                # Konwersja obrazu PIL na QPixmap
-                qimage = ImageQt.toqpixmap(image.convert("RGBA"))
-                pixmap = QPixmap.fromImage(qimage)
-                self.chart_label.setPixmap(pixmap)
-            else:
-                self.chart_label.setText("Nie udało się załadować wykresu.")
-
-    return MainWindow()
+        # Ustawienia układu
+        layout = QVBoxLayout()
+        layout.addWidget(self.web_view)
+        container = QWidget()
+        container.setLayout(layout)
+        self.setCentralWidget(container)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    main_window = create_main_window()
+    main_window = CryptoChart()
     main_window.show()
     sys.exit(app.exec())
