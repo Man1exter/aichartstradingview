@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QHBoxLayout, QWidget
 from PySide6.QtCore import Qt
-from panel import CryptoChart
+import sys
+from panel import CryptoChart  # importujemy panel.py, który zawiera CryptoChart
 
 class AnalysisButtonApp(QMainWindow):
     def __init__(self):
@@ -27,8 +28,8 @@ class AnalysisButtonApp(QMainWindow):
         container.setLayout(layout)
         self.setCentralWidget(container)
 
-        # Window settings
-        self.resize(1200, 800)
+        # Window settings: powiększenie o 10%
+        self.resize(1200 * 1.1, 800 * 1.1)
         self.setWindowFlags(Qt.Window | Qt.WindowTitleHint | Qt.WindowCloseButtonHint)
         self.center_window()
 
@@ -42,7 +43,11 @@ class AnalysisButtonApp(QMainWindow):
         self.move(window_geometry.topLeft())
 
 if __name__ == "__main__":
-    app = QApplication([])
-    main_window = AnalysisButtonApp()
-    main_window.show()
-    app.exec()
+    # Upewnij się, że uruchamiamy plik panel.py (CryptoChart) tylko jeśli to konieczne
+    if 'panel.py' in sys.argv[0]:  # Sprawdzamy, czy panel.py jest uruchomiony
+        app = QApplication([])
+        main_window = AnalysisButtonApp()
+        main_window.show()
+        app.exec()
+    else:
+        print("Uruchom plik panel.py przed analysis_button.py")
