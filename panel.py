@@ -10,6 +10,9 @@ class CryptoChart(QMainWindow):
 
         self.setWindowTitle("Crypto Chart Viewer - TradingView")
 
+        # Ustawienia ogólne okna (czarne tło)
+        self.setStyleSheet("background-color: black;")  # Ustawienie czarnego tła dla całej aplikacji
+
         # Widget WebEngineView do wyświetlenia widgetu TradingView
         self.web_view = QWebEngineView()
 
@@ -66,18 +69,48 @@ class CryptoChart(QMainWindow):
             width: 150px;
         """)
 
+        # Efekt najechania na przycisk
+        self.analysis_button.setStyleSheet("""
+            background-color: #28a745;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+            height: 40px;
+            width: 150px;
+        """)
+        self.analysis_button.setStyleSheet("""
+            QPushButton {
+                background-color: #28a745;
+                color: white;
+                font-size: 18px;
+                font-weight: bold;
+                padding: 10px;
+                border-radius: 5px;
+                height: 40px;
+                width: 150px;
+            }
+            QPushButton:hover {
+                background-color: #218838;  # Darker green on hover
+            }
+            QPushButton:pressed {
+                background-color: #1e7e34;  # Even darker green on press
+            }
+        """)
+
         # Connect the button to a function
         self.analysis_button.clicked.connect(self.run_analysis_ai)
 
         # Set up the layout for both the chart and the button
-        main_layout = QVBoxLayout()  # Change from QHBoxLayout to QVBoxLayout
+        main_layout = QVBoxLayout()  # Zmieniono z QHBoxLayout na QVBoxLayout
         chart_layout = QHBoxLayout()
         chart_layout.addWidget(self.web_view)
         main_layout.addLayout(chart_layout)
 
         # Add the analysis button below the chart
         button_layout = QHBoxLayout()
-        button_layout.addItem(QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))  # Spacer to move the button right
+        button_layout.addItem(QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))  # Spacer, aby przycisk był z prawej
         button_layout.addWidget(self.analysis_button)
         main_layout.addLayout(button_layout)
 
@@ -102,14 +135,13 @@ class CryptoChart(QMainWindow):
     def run_analysis_ai(self):
         """Funkcja uruchamiająca analizę AI (można dostosować w zależności od wymagań)."""
         print("Uruchamianie analizy AI...")
-        # Możesz dodać kod do uruchamiania analizy AI lub dowolną inną funkcjonalność
-        # np. subprocess.run([sys.executable, 'ai_analysis.py']) w celu uruchomienia kolejnego pliku.
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     main_window = CryptoChart()
     main_window.show()
     sys.exit(app.exec())
+
 
 
 
