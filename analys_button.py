@@ -14,7 +14,37 @@ class AnalysisButtonApp(QMainWindow):
 
         # Create a button
         self.button = QPushButton("Show Chart")
-        self.button.setStyleSheet("background-color: green; color: white; font-size: 16px; padding: 10px;")
+        self.button.setStyleSheet("""
+            background-color: green; 
+            color: white; 
+            font-size: 16px; 
+            padding: 10px; 
+            border-radius: 5px; 
+            height: 40px; 
+            width: 150px;
+            transition: background-color 0.3s ease;
+        """)
+
+        # Efekt najechania i kliknięcia na przycisk
+        self.button.setStyleSheet("""
+            QPushButton {
+                background-color: green;
+                color: white;
+                font-size: 16px;
+                padding: 10px;
+                border-radius: 5px;
+                height: 40px;
+                width: 150px;
+                transition: background-color 0.3s ease;
+            }
+            QPushButton:hover {
+                background-color: #218838;  /* Darker green on hover */
+                cursor: pointer;  /* Zmiana kursora na rękę */
+            }
+            QPushButton:pressed {
+                background-color: #1e7e34;  /* Even darker green on press */
+            }
+        """)
 
         # Connect the button to a function
         self.button.clicked.connect(self.show_chart)
@@ -51,3 +81,4 @@ if __name__ == "__main__":
         app.exec()
     else:
         print("Uruchom plik panel.py przed analysis_button.py")
+
