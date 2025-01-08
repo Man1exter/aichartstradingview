@@ -1,6 +1,5 @@
 import sys
-import subprocess
-from PySide6.QtWidgets import QApplication, QMainWindow, QHBoxLayout, QVBoxLayout, QWidget, QPushButton, QSpacerItem, QSizePolicy, QLineEdit
+from PySide6.QtWidgets import QApplication, QMainWindow, QHBoxLayout, QVBoxLayout, QWidget, QPushButton, QSpacerItem, QSizePolicy, QLineEdit, QFileDialog
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtCore import Qt
 
@@ -55,10 +54,13 @@ class CryptoChart(QMainWindow):
         '''
         self.web_view.setHtml(self.tradingview_html)
 
-        # Create buttons for AI analysis, refreshing the chart, and changing the chart symbol
+        # Create buttons for AI analysis, refreshing the chart, changing the chart symbol, saving the chart, and drawing suggestions
         self.analysis_button = QPushButton("Analyze Chart")
         self.refresh_button = QPushButton("Refresh Chart")
         self.change_symbol_button = QPushButton("Change Symbol")
+        self.save_chart_button = QPushButton("Save Chart")
+        self.draw_suggestions_button = QPushButton("Draw Suggestions")
+        self.toggle_ai_button = QPushButton("AI On/Off")
 
         # Set styles for the buttons
         button_style = """
@@ -82,11 +84,17 @@ class CryptoChart(QMainWindow):
         self.analysis_button.setStyleSheet(button_style)
         self.refresh_button.setStyleSheet(button_style)
         self.change_symbol_button.setStyleSheet(button_style)
+        self.save_chart_button.setStyleSheet(button_style)
+        self.draw_suggestions_button.setStyleSheet(button_style)
+        self.toggle_ai_button.setStyleSheet(button_style)
 
         # Connect the buttons to their respective functions
         self.analysis_button.clicked.connect(self.run_analysis_ai)
         self.refresh_button.clicked.connect(self.refresh_chart)
         self.change_symbol_button.clicked.connect(self.change_symbol)
+        self.save_chart_button.clicked.connect(self.save_chart)
+        self.draw_suggestions_button.clicked.connect(self.draw_suggestions)
+        self.toggle_ai_button.clicked.connect(self.toggle_ai)
 
         # Create an input field for changing the chart symbol
         self.symbol_input = QLineEdit()
@@ -105,8 +113,9 @@ class CryptoChart(QMainWindow):
 
         # Set up the layout for the chart and the buttons
         main_layout = QVBoxLayout()
-        chart_layout = QHBoxLayout()
+        chart_layout = QVBoxLayout()
         chart_layout.addWidget(self.web_view)
+        chart_layout.setStretch(0, 1)  # Ensure the chart takes up most of the space
         main_layout.addLayout(chart_layout)
 
         # Add the buttons and input field below the chart
@@ -116,6 +125,9 @@ class CryptoChart(QMainWindow):
         button_layout.addWidget(self.refresh_button)
         button_layout.addWidget(self.symbol_input)
         button_layout.addWidget(self.change_symbol_button)
+        button_layout.addWidget(self.save_chart_button)
+        button_layout.addWidget(self.draw_suggestions_button)
+        button_layout.addWidget(self.toggle_ai_button)
         main_layout.addLayout(button_layout)
 
         container = QWidget()
@@ -123,9 +135,12 @@ class CryptoChart(QMainWindow):
         self.setCentralWidget(container)
 
         # Ustawienia okna
-        self.resize(1200 * 1.1, 800 * 1.1)  # Powiększenie okna o 10%
+        self.resize(1200, 800)
         self.setWindowFlags(Qt.Window | Qt.WindowTitleHint | Qt.WindowCloseButtonHint)
         self.center_window()
+
+        # AI suggestions state
+        self.ai_enabled = False
 
     def run_analysis_ai(self):
         # Placeholder function for AI analysis
@@ -146,6 +161,30 @@ class CryptoChart(QMainWindow):
             )
             self.web_view.setHtml(self.tradingview_html)
             print(f"Symbol changed to {new_symbol}.")
+
+    def save_chart(self):
+        # Save the current chart as an image
+        file_dialog = QFileDialog(self)
+        file_dialog.setAcceptMode(QFileDialog.AcceptSave)
+        file_dialog.setNameFilter("Images (*.png *.xpm *.jpg)")
+        file_dialog.setDefaultSuffix("png")
+        if file_dialog.exec():
+            file_path = file_dialog.selectedFiles()[0]
+            self.web_view.grab().save(file_path)
+            print(f"Chart saved to {file_path}.")
+
+    def draw_suggestions(self):
+        # Placeholder function for drawing AI suggestions
+        if self.ai_enabled:
+            print("Drawing AI suggestions on the chart...")
+        else:
+            print("AI suggestions are disabled.")
+
+    def toggle_ai(self):
+        # Toggle AI suggestions on/off
+        self.ai_enabled = not self.ai_enabled
+        state = "enabled" if self.ai_enabled else "disabled"
+        print(f"AI suggestions {state}.")
 
     def center_window(self):
         screen_geometry = QApplication.primaryScreen().geometry()
