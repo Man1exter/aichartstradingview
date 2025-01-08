@@ -1,5 +1,6 @@
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow
+import subprocess
+from PySide6.QtWidgets import QApplication, QMainWindow, QHBoxLayout, QVBoxLayout, QWidget, QPushButton, QSpacerItem, QSizePolicy
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtCore import Qt
 
@@ -25,13 +26,6 @@ class CryptoChart(QMainWindow):
                     height: 100%;
                     overflow: hidden;
                 }
-                #tradingview_widget {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                }
             </style>
         </head>
         <body>
@@ -41,15 +35,14 @@ class CryptoChart(QMainWindow):
                     "width": "100%",
                     "height": "100%",
                     "symbol": "BINANCE:BTCUSDT",
-                    "interval": "1",
+                    "interval": "D",
                     "timezone": "Etc/UTC",
                     "theme": "dark",
                     "style": "1",
                     "locale": "en",
-                    "toolbar_bg": "#000000",
+                    "toolbar_bg": "#f1f3f6",
                     "enable_publishing": false,
-                    "hide_top_toolbar": true,
-                    "save_image": false,
+                    "allow_symbol_change": true,
                     "container_id": "tradingview_widget"
                 });
             </script>
@@ -59,12 +52,46 @@ class CryptoChart(QMainWindow):
 
         # Załaduj HTML do WebEngineView
         self.web_view.setHtml(tradingview_html)
-        self.setCentralWidget(self.web_view)
+
+        # Create a button for AI analysis
+        self.analysis_button = QPushButton("Analiza AI")
+        self.analysis_button.setStyleSheet("""
+            background-color: #28a745;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+            height: 40px;
+            width: 150px;
+        """)
+
+        # Connect the button to a function
+        self.analysis_button.clicked.connect(self.run_analysis_ai)
+
+        # Set up the layout for both the chart and the button
+        main_layout = QVBoxLayout()  # Change from QHBoxLayout to QVBoxLayout
+        chart_layout = QHBoxLayout()
+        chart_layout.addWidget(self.web_view)
+        main_layout.addLayout(chart_layout)
+
+        # Add the analysis button below the chart
+        button_layout = QHBoxLayout()
+        button_layout.addItem(QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))  # Spacer to move the button right
+        button_layout.addWidget(self.analysis_button)
+        main_layout.addLayout(button_layout)
+
+        container = QWidget()
+        container.setLayout(main_layout)
+        self.setCentralWidget(container)
 
         # Ustawienia okna
-        self.resize(1200, 800)
+        self.resize(1200 * 1.1, 800 * 1.1)  # Powiększenie okna o 10%
         self.setWindowFlags(Qt.Window | Qt.WindowTitleHint | Qt.WindowCloseButtonHint)
         self.center_window()
+
+        # Uruchomienie analysis_button.py automatycznie
+        subprocess.run([sys.executable, 'analysis_button.py'])
 
     def center_window(self):
         screen_geometry = QApplication.primaryScreen().geometry()
@@ -72,8 +99,17 @@ class CryptoChart(QMainWindow):
         window_geometry.moveCenter(screen_geometry.center())
         self.move(window_geometry.topLeft())
 
+    def run_analysis_ai(self):
+        """Funkcja uruchamiająca analizę AI (można dostosować w zależności od wymagań)."""
+        print("Uruchamianie analizy AI...")
+        # Możesz dodać kod do uruchamiania analizy AI lub dowolną inną funkcjonalność
+        # np. subprocess.run([sys.executable, 'ai_analysis.py']) w celu uruchomienia kolejnego pliku.
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     main_window = CryptoChart()
     main_window.show()
     sys.exit(app.exec())
+
+
+
