@@ -53,3 +53,5 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 - [TradingView](https://www.tradingview.com/) for providing the chart widget.
 - [PySide6](https://pypi.org/project/PySide6/) for the GUI framework.
+- [Pillow](https://pypi.org/project/Pillow/) for image processing.
+- [Matplotlib](https://matplotlib.org/) for plotting charts.
