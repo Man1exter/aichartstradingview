@@ -14,16 +14,17 @@ class MainApp(tk.Tk):
         self.configure(bg="#2e2e2e")
         self.data_manager = DataManager()
         self.ai_module = AIModule()
-        self.create_widgets()
         
-        # Load background image
-        self.bg_image = Image.open("background.png") # Replace with your background image
-        self.bg_image = self.bg_image.resize((self.winfo_screenwidth(), self.winfo_screenheight()), Image.Resampling.LANCZOS)
-        self.bg_photo = ImageTk.PhotoImage(self.bg_image)
+        try:
+          self.bg_image = Image.open("background.png") 
+          self.bg_image = self.bg_image.resize((self.winfo_screenwidth(), self.winfo_screenheight()), Image.LANCZOS)
+          self.bg_photo = ImageTk.PhotoImage(self.bg_image)
+          self.background_label = tk.Label(self, image=self.bg_photo)
+          self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
+        except FileNotFoundError:
+          print("Warning: background.png not found")
 
-        self.background_label = tk.Label(self, image=self.bg_photo)
-        self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
-
+        self.create_widgets()
         self.update_charts()
 
     def create_widgets(self):

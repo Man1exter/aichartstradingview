@@ -25,13 +25,15 @@ class DataManager:
             response = requests.get(url)
             response.raise_for_status()
             data = response.json()
+            if 'prices' not in data:
+               return pd.DataFrame()
             prices = np.array(data['prices'])[:,1]
             df = pd.DataFrame({'price': prices})
             return df
         except requests.exceptions.RequestException as e:
             print(f"Error fetching data: {e}")
             return pd.DataFrame()
-    
+
     def get_latest_news(self):
         # Tutaj możesz zaimplementować pobieranie newsów z wybranego źródła (np. za pomocą Beautiful Soup)
         return "Aktualności niedostępne"
