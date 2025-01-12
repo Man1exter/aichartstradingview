@@ -14,8 +14,10 @@ currently being supported with security updates.
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
+If you discover a security vulnerability, please report it by emailing security@yourdomain.com. Please include the following details in your report:
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+- A description of the vulnerability.
+- Steps to reproduce the vulnerability.
+- Any potential impact or exploit scenarios.
+
+You can expect an initial response within 48 hours. We will keep you updated on the progress and may reach out for additional information. Once the vulnerability is confirmed, we will work on a fix and release an update as soon as possible. Thank you for helping to keep our project secure.

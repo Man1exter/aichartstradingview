@@ -29,6 +29,20 @@ Crypto Chart Viewer is a desktop application that allows you to view and analyze
     pip install -r requirements.txt
     ```
 
+## Dependencies
+
+The following dependencies are required to run the application:
+
+- **PySide6**: `pip install PySide6`
+- **Pillow**: `pip install Pillow`
+- **Matplotlib**: `pip install matplotlib`
+- **Requests**: `pip install requests`
+
+You can install all dependencies at once using the `requirements.txt` file:
+```sh
+pip install -r requirements.txt
+```
+
 ## Configuration
 
 Before running the application, you may need to configure certain settings. These settings can be found in the `config.json` file in the project directory. Below is an example configuration:
@@ -72,6 +86,20 @@ If you encounter any issues while using the application, here are some common so
 
 If the issue persists, please open an issue on the GitHub repository.
 
+## FAQ
+
+**Q: How do I change the default symbol?**
+A: You can change the default symbol by editing the `default_symbol` field in the `config.json` file.
+
+**Q: Can I disable AI analysis?**
+A: Yes, you can disable AI analysis by setting the `ai_analysis_enabled` field to `false` in the `config.json` file.
+
+**Q: How do I export chart data?**
+A: Click the "Export Data" button to save the current chart data to a CSV file.
+
+**Q: Where can I report bugs or request features?**
+A: You can report bugs or request features by opening an issue on the GitHub repository.
+
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
@@ -86,3 +114,7 @@ This project is licensed under the MIT License. See the LICENSE file for details
 - [PySide6](https://pypi.org/project/PySide6/) for the GUI framework.
 - [Pillow](https://pypi.org/project/Pillow/) for image processing.
 - [Matplotlib](https://matplotlib.org/) for plotting charts.
+
+## Contact
+
+For further inquiries, please contact us at support@yourdomain.com.
