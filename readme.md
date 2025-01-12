@@ -1,6 +1,6 @@
 # Crypto Chart Viewer - TradingView
 
-Crypto Chart Viewer is a desktop application that allows you to view and analyze cryptocurrency charts using the TradingView widget. The application provides various functionalities such as AI analysis, refreshing the chart, changing the chart symbol, saving the chart, and drawing AI suggestions.
+Crypto Chart Viewer is a desktop application that allows you to view and analyze cryptocurrency charts using the TradingView widget. The application provides various functionalities such as AI analysis, refreshing the chart, changing the chart symbol, saving the chart, drawing AI suggestions, and exporting data.
 
 ## Features
 
@@ -11,6 +11,8 @@ Crypto Chart Viewer is a desktop application that allows you to view and analyze
 - **Save Chart**: Save the current chart as an image.
 - **Draw AI Suggestions**: Draw suggestions on the chart using artificial intelligence.
 - **Toggle AI Suggestions**: Enable or disable AI suggestions.
+- **Add Alert**: Add price alerts for specific symbols.
+- **Export Data**: Export chart data to a CSV file.
 
 ## Installation
 
@@ -27,6 +29,22 @@ Crypto Chart Viewer is a desktop application that allows you to view and analyze
     pip install -r requirements.txt
     ```
 
+## Configuration
+
+Before running the application, you may need to configure certain settings. These settings can be found in the `config.json` file in the project directory. Below is an example configuration:
+
+```json
+{
+    "default_symbol": "BTCUSD",
+    "refresh_interval": 60,
+    "ai_analysis_enabled": true
+}
+```
+
+- **default_symbol**: The default cryptocurrency symbol to display.
+- **refresh_interval**: The interval (in seconds) at which the chart should refresh.
+- **ai_analysis_enabled**: Enable or disable AI analysis by default.
+
 ## Usage
 
 1. Run the application:
@@ -40,6 +58,19 @@ Crypto Chart Viewer is a desktop application that allows you to view and analyze
     - **Save Chart**: Save the current chart as an image.
     - **Draw Suggestions**: Draw AI suggestions on the chart.
     - **AI On/Off**: Toggle AI suggestions on or off.
+    - **Add Alert**: Add price alerts for specific symbols.
+    - **Export Data**: Export the current chart data to a CSV file.
+
+## Troubleshooting
+
+If you encounter any issues while using the application, here are some common solutions:
+
+- **Application not starting**: Ensure that all dependencies are installed correctly by running `pip install -r requirements.txt`.
+- **Chart not loading**: Check your internet connection and ensure that the TradingView widget is accessible.
+- **AI analysis not working**: Verify that the AI analysis feature is enabled in the `config.json` file.
+- **Export data not working**: Ensure that you have write permissions to the directory where the CSV file is being saved.
+
+If the issue persists, please open an issue on the GitHub repository.
 
 ## Contributing
 
