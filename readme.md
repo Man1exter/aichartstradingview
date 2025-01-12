@@ -118,3 +118,33 @@ This project is licensed under the MIT License. See the LICENSE file for details
 ## Contact
 
 For further inquiries, please contact us at support@yourdomain.com.
+
+## Changelog
+
+### v1.1.0
+- Added "Export Data" feature to export chart data to a CSV file.
+- Added "Configuration" section to the README.
+- Added "Troubleshooting" section to the README.
+- Added "FAQ" section to the README.
+- Added "Contact" section to the README.
+
+### v1.0.0
+- Initial release of Crypto Chart Viewer.
+- Features: View cryptocurrency charts, AI analysis, refresh chart, change symbol, save chart, draw AI suggestions, toggle AI suggestions, add alert.
+
+## Credits
+
+- **Contributors**: Thanks to all the contributors who have helped improve this project.
+- **Third-Party Libraries**: This project uses the following third-party libraries:
+  - [TradingView](https://www.tradingview.com/)
+  - [PySide6](https://pypi.org/project/PySide6/)
+  - [Pillow](https://pypi.org/project/Pillow/)
+  - [Matplotlib](https://matplotlib.org/)
+
+## Support
+
+If you need help or support, you can:
+
+- Visit our [GitHub Discussions](https://github.com/yourusername/aichartstradingview/discussions) page to ask questions and get help from the community.
+- Check the [FAQ](#faq) section for answers to common questions.
+- Contact us directly at support@yourdomain.com for further assistance.
